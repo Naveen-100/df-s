@@ -1,0 +1,11 @@
+# amazon-linux-extras install nginx1 -y
+# docker run -itd --network app --name tomcat1 -p 8080:8080 n11
+# cat /etc/nginx/nginx.conf
+# docker run -itd --network app --name nginxx  -p 80:80 ngii 
+# Note: tomcat1 container need to be run before running nginxx container
+# because we defined proxy for tomcat1 in nginx.config (proxy_pass http://tomcat1:8080/nk1-1.0/;)
+FROM amazonlinux:2
+RUN amazon-linux-extras install nginx1 -y
+RUN rm -rf /etc/nginx/nginx.conf
+COPY nginx.conf /etc/nginx/
+CMD ["nginx","-g","daemon off;"]

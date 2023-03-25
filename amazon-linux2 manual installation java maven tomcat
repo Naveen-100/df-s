@@ -3,7 +3,7 @@ yum install git -y
 
 amazon-linux-extras install java-openjdk11 -y
 or 
-wget wget https://download.java.net/java/ga/jdk11/openjdk-11_linux-x64_bin.tar.gz
+wget https://download.java.net/java/ga/jdk11/openjdk-11_linux-x64_bin.tar.gz
 tar zxf openjdk-11_linux-x64_bin.tar.gz
 mv jdk-11 /opt/jdk11
 --> Adding to path

@@ -1,0 +1,42 @@
+amazonlinux:2
+yum install git -y
+
+amazon-linux-extras install java-openjdk11 -y
+or 
+wget wget https://download.java.net/java/ga/jdk11/openjdk-11_linux-x64_bin.tar.gz
+tar zxf openjdk-11_linux-x64_bin.tar.gz
+mv jdk-11 /opt/jdk11
+--> Adding to path
+echo $PATH
+PATH=$PATH:/opt/jdk11/bin
+export PATH
+JAVA_HOME=/opt/jdk11/
+export JAVA_HOME
+echo $JAVA_HOME
+
+wget https://archive.apache.org/dist/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz
+tar -zxf apache-maven-3.8.6-bin.tar.gz
+mv apache-maven-3.8.6 /opt/maven
+/opt/maven/bin/mvn package
+
+wget https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.58/bin/apache-tomcat-8.5.58.tar.gz
+tar -zxf apache-tomcat-8.5.58.tar.gz
+mv apache-tomcat-8.5.58 /opt/tomcat
+/opt/tomcat/bin
+./catalina.sh start
+
+ssh-keygen -t rsa
+mkdir /root/.ssh
+chmod -R 700 root/.ssh
+chown -R root:root /root/.ssh
+cp ./id_rsa /root/.ssh/id_rsa
+chmod 600 /root/.ssh/id_rsa
+
+
+ssh-keyscan github.com >> /root/.ssh/known_hosts
+git clone git@github.com:Naveen-100/java-login-app-war.git
+cd java-login-app-war
+/opt/maven/bin/mvn package
+
+official tomcat image location
+/usr/local/tomcat/bin

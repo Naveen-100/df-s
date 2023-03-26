@@ -1,0 +1,25 @@
+# allow inbound rules 3306 anywhere
+
+# docker build -t naveen2809/mysq:v1 .
+# docker run -itd --network app --name sqll  -p 3306:3306 naveen2809/mysq:v1
+# docker run -itd --network app --name tomcat1 -p 8080:8080 naveen2809/tomcatsite:v2
+# docker run -itd --network app --name nginxx  -p 80:80 naveen2809/nginx:v1
+
+# connect mysql for show db & tables
+# docker inspect sqll  // copy IPAddress
+# docker exec -it sqll bash
+# mysql -h 172.18.0.2 -u admin -p
+# OR
+# connect using mysql workbench 
+
+# official docker mysql:5.7 env variables sending from cli
+# docker run -itd --network app --name sqll -e MYSQL_USER=admin -e MYSQL_PASSWORD=Admin123 -e MYSQL_DATABASE=UserDB -p 3306:3306 mysql:5.7
+# Note: don't use && \ for ENV 
+# ex: ENV MYSQL_ALLOW_EMPTY_PASSWORD yes && \
+#     MYSQL_USER admin
+
+FROM mysql:5.7
+ENV MYSQL_ALLOW_EMPTY_PASSWORD yes
+ENV MYSQL_USER admin
+ENV MYSQL_PASSWORD Admin123
+ENV MYSQL_DATABASE UserDB

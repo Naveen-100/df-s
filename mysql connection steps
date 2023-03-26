@@ -1,0 +1,64 @@
+amazon-linux-extras install nginx1 -y
+docker run -itd --network app --name tomcat1 -p 8080:8080 naveen2809/tomcatsite:v2
+cat /etc/nginx/nginx.conf
+docker run -itd --network app --name nginxx  -p 80:80 naveen2809/nginx:v1
+
+MariaDB
+yum install mariadb-server -y
+systemctl enable mariadb
+systemctl start mariadb
+inbound rule 3306 from anywhere
+
+un: admin
+pass: Admin123
+endp: nk1.cxmxydrgqqb6.us-east-1.rds.amazonaws.com 3306
+jdbc:mysql://nk1.cxmxydrgqqb6.us-east-1.rds.amazonaws.com:3306/UserDB
+
+command to connect
+mysql -h nk1.cxmxydrgqqb6.us-east-1.rds.amazonaws.com -P 3306 -u admin -p 
+Admin123
+
+or 
+
+connect with mysql workbeanch in local with public ip & port
+
+--> tomcat1 connection to RDS
+docker exec -it tomcat1 bash
+/usr/bin/yum install telnet -y
+telnet nk1.cxmxydrgqqb6.us-east-1.rds.amazonaws.com 3306
+o/p: Connected to nk1.cxmxydrgqqb6.us-east-1.rds.amazonaws.com. 
+exit
+
+--> nginxx connection to tomcat1
+docker exec -it nginxx bash
+/usr/bin/yum install telnet -y
+telnet tomcat1 8080
+o/p: Connected to tomcat1.
+exit
+
+--> remove mariadb 
+systemctl stop mariadb
+systemctl disable mariadb
+yum remove mariadb-server mariadb -y
+rm -rf /var/lib/mysql/
+rm -rf /etc/my.cnf
+rm -rf /etc/my.cnf.d/
+yum autoremove -y
+
+
+# Note: don't use && \ for ENV 
+# ex: ENV MYSQL_ALLOW_EMPTY_PASSWORD yes && \
+#         MYSQL_USER admin
+
+docker build -t naveen2809/mysq:v1 .
+docker run -itd --network app --name sqll  -p 3306:3306 naveen2809/mysq:v1
+docker run -itd --network app --name tomcat1 -p 8080:8080 naveen2809/tomcatsite:v2
+docker run -itd --network app --name nginxx  -p 80:80 naveen2809/nginx:v1
+
+docker inspect sqll
+docker exec -it sqll bash
+mysql -h 172.18.0.2 -u admin -p
+
+or 
+Use official mysql image
+docker run -itd --network app --name sqll -e MYSQL_USER=admin -e MYSQL_PASSWORD=Admin123 -e MYSQL_DATABASE=UserDB -p 3306:3306 mysql:5.7
